@@ -10,10 +10,11 @@ try:
 	from urlparse import urlparse, parse_qs
 except:
 	from urllib.parse import urlparse, parse_qs
-	
+
 import os
 port = int(os.environ.get("PORT", 5000))	
 PORT_NUMBER = port
+
 
 sensor=0
 #This class will handles any incoming request from
@@ -52,8 +53,8 @@ class myHandler(BaseHTTPRequestHandler):
 	#Handler for the GET requests
 	def do_GET(self):
 		global s1,s2,s3
-		if self.path=="/":  #127.0.0.1:8080/
-			self.path="/index.html" #127.0.0.1:8080/index.html
+		if self.path=="/":  #127.0.0.1:5000/
+			self.path="/index.html" #127.0.0.1:5000/index.html
 		if self.path.find('?'):
 			print (self.path)
 			query_components = parse_qs(urlparse(self.path).query)
@@ -90,6 +91,7 @@ class myHandler(BaseHTTPRequestHandler):
 				self.send_header('Content-type',mimetype)
 				self.end_headers()
 				data=f.read()
+				data= data.replace('s1',str(s1))
 				try:
                                         self.wfile.write(data)
                                 except:
